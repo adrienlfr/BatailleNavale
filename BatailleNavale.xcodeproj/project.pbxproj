@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		977C04122011D22700856F8E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977C04112011D22700856F8E /* main.swift */; };
+		977C04192011D4F800856F8E /* Plateau.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977C04182011D4F800856F8E /* Plateau.swift */; };
+		977C041B2011D7F000856F8E /* Bateau.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977C041A2011D7F000856F8E /* Bateau.swift */; };
+		977C041D2011D93400856F8E /* CasePosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977C041C2011D93400856F8E /* CasePosition.swift */; };
+		977C041F2011DA1800856F8E /* Joueur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977C041E2011DA1800856F8E /* Joueur.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +29,10 @@
 /* Begin PBXFileReference section */
 		977C040E2011D22700856F8E /* BatailleNavale */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BatailleNavale; sourceTree = BUILT_PRODUCTS_DIR; };
 		977C04112011D22700856F8E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		977C04182011D4F800856F8E /* Plateau.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plateau.swift; sourceTree = "<group>"; };
+		977C041A2011D7F000856F8E /* Bateau.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bateau.swift; sourceTree = "<group>"; };
+		977C041C2011D93400856F8E /* CasePosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CasePosition.swift; sourceTree = "<group>"; };
+		977C041E2011DA1800856F8E /* Joueur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Joueur.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +66,10 @@
 			isa = PBXGroup;
 			children = (
 				977C04112011D22700856F8E /* main.swift */,
+				977C04182011D4F800856F8E /* Plateau.swift */,
+				977C041A2011D7F000856F8E /* Bateau.swift */,
+				977C041C2011D93400856F8E /* CasePosition.swift */,
+				977C041E2011DA1800856F8E /* Joueur.swift */,
 			);
 			path = BatailleNavale;
 			sourceTree = "<group>";
@@ -120,7 +132,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				977C04192011D4F800856F8E /* Plateau.swift in Sources */,
 				977C04122011D22700856F8E /* main.swift in Sources */,
+				977C041D2011D93400856F8E /* CasePosition.swift in Sources */,
+				977C041B2011D7F000856F8E /* Bateau.swift in Sources */,
+				977C041F2011DA1800856F8E /* Joueur.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

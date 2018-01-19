@@ -1,4 +1,4 @@
-//
+ //
 //  main.swift
 //  BatailleNavale
 //
@@ -8,5 +8,14 @@
 
 import Foundation
 
-print("Hello, World!")
+ 
+ 
 
+ 
+ func isShipEntirelyStriked(ship: Bateau, gameBoard: [CasePosition: CaseState]) -> Bool {
+        return false
+ }
+ 
+ func isGameEnded(ships: [Bateau]) -> Bool {
+    return false
+ }
