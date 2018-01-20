@@ -10,12 +10,10 @@ import Foundation
 
 struct Bateau {
     var cases: [CasePosition]
-    var sunk: Bool
     var striked: Int
     
     init() {
         cases = []
-        sunk = false
         striked = 0
     }
     
@@ -31,7 +29,6 @@ struct Bateau {
         let result = isAt(casePosition: casePosition)
         if (result) {
             striked += 1
-            sunk = isSunk()
         }
         return result
     }

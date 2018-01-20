@@ -23,16 +23,25 @@ enum CaseState {
     case blank
 }
 
+enum Action {
+    case isShot
+    case isSunk
+    case isAt
+}
+
 class Plateau{
     
     var nbRowColumn: Int
     var gameBoard: [CasePosition: CaseState]
     var ships: [Bateau]
+    var lastCasePosition: CasePosition?
     
     init(nbRowColumn: Int) {
         self.nbRowColumn = nbRowColumn
         gameBoard = [:]
         ships = []
+        lastCasePosition = nil
+        nbShipsSunk = 0
     }
     
     func initGameBoard(){
@@ -62,7 +71,7 @@ class Plateau{
                 position = CasePosition(row: casePosition.row, col: column)
             }
             
-            onShip = findShipAtCase(casePosition: position, isShot: false)
+            onShip = findShipAtCase(casePosition: position, action: Action.isAt)
             if !onShip {
                 ship.cases.append(position)
             }
@@ -76,20 +85,24 @@ class Plateau{
         return onShip
     }
     
-    func findShipAtCase(casePosition: CasePosition, isShot: Bool) -> Bool {
-        var isAt: Bool = false
+    func findShipAtCase(casePosition: CasePosition, action: Action) -> Bool {
+        var result: Bool = false
         var i = 0
-        while(!isAt && i < ships.count){
-            if(!ships[i].sunk) {
-                if isShot {
-                    isAt = ships[i].isStriked(casePosition: casePosition)
-                } else {
-                    isAt = ships[i].isAt(casePosition: casePosition)
+        while(!result && i < ships.count){
+            if(!ships[i].isSunk()) {
+                switch action {
+                case Action.isShot :
+                    lastCasePosition = casePosition
+                    result = ships[i].isStriked(casePosition: casePosition)
+                case Action.isAt :
+                    result = ships[i].isAt(casePosition: casePosition)
+                case Action.isSunk :
+                    result = ships[i].isSunk()
                 }
             }
             i += 1
         }
-        return isAt
+        return result
     }
     
     func displayBoard() {
@@ -117,15 +130,7 @@ class Plateau{
                 }
             }
         }
+        print()
     }
     
-    func shot(casePosition: CasePosition) -> Bool {
-        if findShipAtCase(casePosition: casePosition, isShot: true) {
-            gameBoard.updateValue(CaseState.red, forKey: casePosition)
-            return true
-        } else {
-            gameBoard.updateValue(CaseState.white, forKey: casePosition)
-            return false
-        }
-    }
 }
