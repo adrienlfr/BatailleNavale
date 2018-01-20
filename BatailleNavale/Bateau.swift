@@ -9,8 +9,15 @@
 import Foundation
 
 struct Bateau {
-    let cases: [CasePosition]
-    let striked: Bool = false
+    var cases: [CasePosition]
+    var sunk: Bool
+    var striked: Int
+    
+    init() {
+        cases = []
+        sunk = false
+        striked = 0
+    }
     
     func length() -> Int {
         return cases.count
@@ -18,5 +25,18 @@ struct Bateau {
     
     func isAt(casePosition: CasePosition) -> Bool {
         return cases.contains(casePosition);
+    }
+    
+    mutating func isStriked(casePosition: CasePosition) -> Bool {
+        let result = isAt(casePosition: casePosition)
+        if (result) {
+            striked += 1
+            sunk = isSunk()
+        }
+        return result
+    }
+    
+    func isSunk() -> Bool {
+        return cases.count == striked
     }
 }
