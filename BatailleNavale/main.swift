@@ -20,23 +20,17 @@ import Foundation
     return false
  }*/
  
- var plateau = Plateau(nbRowColumn: 5)
+ var plateau = Plateau(columns: "A", "B", "C", "D", "E")
  plateau.initGameBoard()
- _ = plateau.addShip(casePosition: CasePosition(row: 1, col: "B"), shipLength: 2, isVertical: false)
- _ = plateau.addShip(casePosition: CasePosition(row: 3, col: "A"), shipLength: 2, isVertical: false)
- _ = plateau.addShip(casePosition: CasePosition(row: 2, col: "D"), shipLength: 3, isVertical: true)
- _ = plateau.addShip(casePosition: CasePosition(row: 1, col: "B"), shipLength: 2, isVertical: false)
+ _ = plateau.addShip(casePosition: CasePosition(row: 1, col: "B"), shipLength: 2, cardinalPoint: CardinalPoint.east)
+ _ = plateau.addShip(casePosition: CasePosition(row: 3, col: "A"), shipLength: 2, cardinalPoint: CardinalPoint.south)
+ _ = plateau.addShip(casePosition: CasePosition(row: 4, col: "D"), shipLength: 3, cardinalPoint: CardinalPoint.west)
+ _ = plateau.addShip(casePosition: CasePosition(row: 1, col: "B"), shipLength: 2, cardinalPoint: CardinalPoint.east)
  
  for row in (0..<5){
     for col in (0..<5){
         let column = Character(UnicodeScalar(65 + col)!)
         let casePosition: CasePosition = CasePosition(row: row, col: column)
-        if plateau.shot(casePosition: casePosition) {
-            var msg = "Touché!"
-            print(msg)
-        } else {
-            print("Plouf!")
-        }
     }
  }
  

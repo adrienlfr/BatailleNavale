@@ -8,15 +8,6 @@
 
 import Foundation
 
-extension Character {
-    var asciiValue: Int {
-        get {
-            let s = String(self).unicodeScalars
-            return Int(s[s.startIndex].value)
-        }
-    }
-}
-
 enum CaseState {
     case white
     case red
@@ -24,20 +15,50 @@ enum CaseState {
 }
 
 enum Action {
-    case isShot
-    case isSunk
+    case shot
     case isAt
 }
 
+enum CardinalPoint {
+    case north
+    case south
+    case east
+    case west
+}
+
+extension Optional {
+    func lett(_ lambda: (_ value: Wrapped) -> Void) {
+        switch self {
+        case .some(let value):
+            lambda(value)
+        case .none:
+            break
+        }
+    }
+}
+
 class Plateau{
-    
-    var nbRowColumn: Int
+    var columns: [Character]// = "ABCDEFGH".map( { return $0 })
+    var nbRow: Int
     var gameBoard: [CasePosition: CaseState]
     var ships: [Bateau]
     var lastCasePosition: CasePosition?
+    var nbShipsSunk: Int
+    var allPositionsByLine: [CasePosition] {
+        var positions = [CasePosition]()
+        for row in (0..<columns.count){
+            for col in (0..<nbRow){
+                let column = columns[col]
+                let casePosition = CasePosition(row: row, col: column)
+                positions.append(casePosition)
+            }
+        }
+        return positions
+    }
     
-    init(nbRowColumn: Int) {
-        self.nbRowColumn = nbRowColumn
+    init(columns: Character...) {
+        self.columns = columns
+        self.nbRow = columns.count
         gameBoard = [:]
         ships = []
         lastCasePosition = nil
@@ -45,16 +66,12 @@ class Plateau{
     }
     
     func initGameBoard(){
-        for row in (0..<nbRowColumn){
-            for col in (0..<nbRowColumn){
-                let column = Character(UnicodeScalar(65 + col)!)
-                let casePosition = CasePosition(row: row, col: column)
-                gameBoard.updateValue(CaseState.blank, forKey: casePosition)
-            }
+        allPositionsByLine.forEach { position in
+            gameBoard.updateValue(CaseState.blank, forKey: position)
         }
     }
     
-    func addShip(casePosition: CasePosition, shipLength: Int, isVertical: Bool) -> Bool {
+    func addShip(casePosition: CasePosition, shipLength: Int, cardinalPoint: CardinalPoint) -> Bool {
         var onShip = false
         var i = 0
         var ship = Bateau()
@@ -62,16 +79,12 @@ class Plateau{
         while(!onShip && i < shipLength){
             let position: CasePosition
             
-            if (isVertical) {
-                let row = casePosition.row + i
-                position = CasePosition(row: row, col: casePosition.column)
-            } else {
-                let letter = Character(String(casePosition.column)).asciiValue + i
-                let column = Character(UnicodeScalar(letter)!)
-                position = CasePosition(row: casePosition.row, col: column)
+            if let nextPosition = casePosition.positionAt(cardinalPoint) {
+                position = nextPosition
             }
             
-            onShip = findShipAtCase(casePosition: position, action: Action.isAt)
+            
+            onShip = findShipAtCase(casePosition: position, action: Action.isAt) == Answer.touched
             if !onShip {
                 ship.cases.append(position)
             }
@@ -85,19 +98,22 @@ class Plateau{
         return onShip
     }
     
-    func findShipAtCase(casePosition: CasePosition, action: Action) -> Bool {
-        var result: Bool = false
+    
+    
+    func findShipAtCase(casePosition: CasePosition, action: Action) -> Answer {
+        var result: Answer = Answer.missed
         var i = 0
-        while(!result && i < ships.count){
+        while(result != Answer.missed && i < ships.count){
             if(!ships[i].isSunk()) {
                 switch action {
-                case Action.isShot :
+                case .shot :
                     lastCasePosition = casePosition
                     result = ships[i].isStriked(casePosition: casePosition)
-                case Action.isAt :
-                    result = ships[i].isAt(casePosition: casePosition)
-                case Action.isSunk :
-                    result = ships[i].isSunk()
+                case .isAt :
+                    let isAt = ships[i].isAt(casePosition: casePosition)
+                    if (isAt) {
+                        result = Answer.touched
+                    }
                 }
             }
             i += 1
@@ -106,18 +122,17 @@ class Plateau{
     }
     
     func displayBoard() {
-        for col in (0...nbRowColumn){
+        for col in (0...columns.count){
             if (col > 0) {
-                print(Character(UnicodeScalar(64 + col)!), terminator: " ")
+                print(columns[col-1], terminator: " ")
             } else {
                 print("  ", terminator: " ")
             }
         }
-        for row in (0..<nbRowColumn){
+        for row in (0..<nbRow){
             print("\n", row + 1, terminator: " ")
-            for col in (0..<nbRowColumn){
-                let column = Character(UnicodeScalar(65 + col)!)
-                let casePosition: CasePosition = CasePosition(row: row, col: column)
+            for col in (0..<columns.count){
+                let casePosition: CasePosition = CasePosition(row: row, col: columns[col])
                 let state: CaseState = gameBoard[casePosition]!
                 
                 switch state{

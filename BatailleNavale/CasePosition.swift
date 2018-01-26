@@ -25,4 +25,33 @@ struct CasePosition: Hashable {
         self.row = row
         self.column = col
     }
+    
+    func positionAt(_ cardinalPoint: CardinalPoint) -> CasePosition? {
+        var nextPosition: CasePosition? = nil
+        
+        switch cardinalPoint {
+        case .north:
+            let row = self.row - 1
+            nextPosition = CasePosition(row: row, col: self.column)
+        case .south:
+            let row = self.row + 1
+            nextPosition = CasePosition(row: row, col: self.column)
+        case .east:
+            let letter = columns.index(of: self.column)
+            
+            
+            letter.lett { letter in
+                let column = columns[letter + 1]
+                nextPosition = CasePosition(row: casePosition.row, col: column)
+            }
+        case .west:
+            let letter = columns.index(of: self.column)
+            letter.lett { letter in
+                let column = columns[letter - 1]
+                nextPosition = CasePosition(row: casePosition.row, col: column)
+            }
+        }
+        
+        return nextPosition
+    }
 }

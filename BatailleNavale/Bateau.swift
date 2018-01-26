@@ -8,6 +8,12 @@
 
 import Foundation
 
+enum Answer {
+    case touched
+    case flowed
+    case missed
+}
+
 struct Bateau {
     var cases: [CasePosition]
     var striked: Int
@@ -25,10 +31,14 @@ struct Bateau {
         return cases.contains(casePosition);
     }
     
-    mutating func isStriked(casePosition: CasePosition) -> Bool {
-        let result = isAt(casePosition: casePosition)
-        if (result) {
+    mutating func isStriked(casePosition: CasePosition) -> Answer {
+        var result = Answer.missed
+        if (isAt(casePosition: casePosition)) {
             striked += 1
+            result = Answer.touched
+            if(isSunk()){
+                result = Answer.flowed
+            }
         }
         return result
     }
